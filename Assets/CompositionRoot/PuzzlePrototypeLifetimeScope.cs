@@ -3,7 +3,7 @@ using Navi.Presentation.Controllers;
 using VContainer;
 using VContainer.Unity;
 
-public class GameLifetimeScope : LifetimeScope
+public class PuzzlePrototypeLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
@@ -11,7 +11,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<PuzzleFactory>(Lifetime.Singleton);
 
         // Presentation
-        builder.RegisterComponentInHierarchy<PuzzleView>(); // finds PuzzleView in scene
-        builder.RegisterEntryPoint<TutorialPuzzleController>(); // runs Start()
+        builder.RegisterEntryPoint<TutorialPuzzleController>();
+        builder.RegisterComponentInHierarchy<PuzzleView>(); 
     }
 }
