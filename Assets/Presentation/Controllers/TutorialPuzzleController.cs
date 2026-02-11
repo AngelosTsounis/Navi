@@ -1,9 +1,10 @@
+using System;
 using Navi.Core.Domain;
 using VContainer.Unity;
 
 namespace Navi.Presentation.Controllers
 {
-    public sealed class TutorialPuzzleController : IStartable
+    public sealed class TutorialPuzzleController : IStartable, IDisposable
     {
         private readonly PuzzleFactory _factory;
         private readonly PuzzleView _view;
@@ -23,6 +24,12 @@ namespace Navi.Presentation.Controllers
 
             _view.Bind(_game, OnTilePressed);
             _view.Render();
+        }
+
+        public void Dispose()
+        {
+            if (_game != null)
+                _game.Changed -= OnGameChanged;
         }
 
         private void OnTilePressed(int index)

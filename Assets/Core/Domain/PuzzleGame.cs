@@ -1,32 +1,39 @@
 using System;
+using System.Collections.Generic;
 
 namespace Navi.Core.Domain
 {
     // Sliding puzzle state + rules (pure C#)
     public sealed class PuzzleGame
     {
+        private readonly int[] _tiles; // 0 = empty
+
         public int Size { get; }
-        public int[] Tiles { get; } // 0 = empty
+        public IReadOnlyList<int> Tiles => _tiles; // read-only view
         public event Action Changed;
 
         public PuzzleGame(int size, int[] tiles)
         {
             if (size < 2) throw new ArgumentOutOfRangeException(nameof(size));
+            if (tiles == null) throw new ArgumentNullException(nameof(tiles));
             if (tiles.Length != size * size) throw new ArgumentException("Invalid tile count.");
 
             Size = size;
-            Tiles = (int[])tiles.Clone();
+            _tiles = (int[])tiles.Clone();
         }
 
         public bool TryMoveIndex(int index)
         {
-            int empty = Array.IndexOf(Tiles, 0);
+            if (index < 0 || index >= _tiles.Length)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            int empty = Array.IndexOf(_tiles, 0);
             if (empty < 0) throw new InvalidOperationException("No empty tile (0) found.");
 
             if (!IsAdjacent(index, empty)) return false;
 
             // swap
-            (Tiles[index], Tiles[empty]) = (Tiles[empty], Tiles[index]);
+            (_tiles[index], _tiles[empty]) = (_tiles[empty], _tiles[index]);
             Changed?.Invoke();
             return true;
         }
@@ -34,10 +41,10 @@ namespace Navi.Core.Domain
         public bool IsSolved()
         {
             // 1..N-1 then 0 at end
-            for (int i = 0; i < Tiles.Length - 1; i++)
-                if (Tiles[i] != i + 1) return false;
+            for (int i = 0; i < _tiles.Length - 1; i++)
+                if (_tiles[i] != i + 1) return false;
 
-            return Tiles[^1] == 0;
+            return _tiles[^1] == 0;
         }
 
         private bool IsAdjacent(int a, int b)

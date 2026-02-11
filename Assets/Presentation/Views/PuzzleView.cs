@@ -14,11 +14,34 @@ namespace Navi.Presentation.Controllers
 
         private PuzzleGame _game;
         private Action<int> _onTilePressed;
+        private bool _isBoundAndValid;
 
         public void Bind(PuzzleGame game, Action<int> onTilePressed)
         {
             _game = game;
             _onTilePressed = onTilePressed;
+            _isBoundAndValid = false;
+
+            if (_game == null)
+            {
+                Debug.LogError("PuzzleView.Bind called with null game.", this);
+                return;
+            }
+
+            if (tileButtons == null || tileButtons.Length == 0)
+            {
+                Debug.LogError("PuzzleView has no tileButtons assigned.", this);
+                return;
+            }
+
+            if (_game.Tiles.Count != tileButtons.Length)
+            {
+                Debug.LogError(
+                    $"PuzzleView tileButtons length ({tileButtons.Length}) does not match game tile count ({_game.Tiles.Count}).",
+                    this
+                );
+                return;
+            }
 
             // Wire button clicks once
             for (int i = 0; i < tileButtons.Length; i++)
@@ -29,11 +52,12 @@ namespace Navi.Presentation.Controllers
             }
 
             if (solvedLabel != null) solvedLabel.SetActive(false);
+            _isBoundAndValid = true;
         }
 
         public void Render()
         {
-            if (_game == null) return;
+            if (!_isBoundAndValid || _game == null) return;
 
             for (int i = 0; i < tileButtons.Length; i++)
             {
