@@ -23,7 +23,7 @@ namespace Navi.Presentation.Controllers
             _game.Changed += OnGameChanged;
 
             _view.Bind(_game, OnTilePressed);
-            _view.Render();
+            RefreshView(); // initial draw + solved state
         }
 
         public void Dispose()
@@ -36,13 +36,19 @@ namespace Navi.Presentation.Controllers
         {
             if (_game == null) return;
 
-            if (_game.TryMoveIndex(index))
-            {
-                if (_game.IsSolved())
-                    _view.ShowSolved();
-            }
+            // Attempt move; game will raise Changed if it actually moved
+            _game.TryMoveIndex(index);
         }
 
-        private void OnGameChanged() => _view.Render();
+        private void OnGameChanged() => RefreshView();
+
+        private void RefreshView()
+        {
+            if (_game == null) return;
+
+            bool solved = _game.IsSolved();
+            _view.Render(showEmptyPiece: solved);     // reveal 0 only when solved
+            _view.SetSolved(solved);                  // show/hide solved label
+        }
     }
 }
