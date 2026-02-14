@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace Navi.Core.Domain
 {
-    // Sliding puzzle state + rules (pure C#)
     public sealed class PuzzleGame
     {
-        private readonly int[] _tiles; // 0 = empty
+        private readonly int[] _tiles;
 
         public int Size { get; }
-        public IReadOnlyList<int> Tiles => _tiles; // read-only view
+        public IReadOnlyList<int> Tiles => _tiles;
         public event Action Changed;
 
         public PuzzleGame(int size, int[] tiles)
@@ -55,5 +54,16 @@ namespace Navi.Core.Domain
             int dy = Math.Abs(ay - by);
             return (dx + dy) == 1;
         }
+
+        public int EmptyIndex
+        {
+            get
+            {
+                int empty = Array.IndexOf(_tiles, 0);
+                if (empty < 0) throw new InvalidOperationException("No empty tile (0) found.");
+                return empty;
+            }
+        }
+
     }
 }

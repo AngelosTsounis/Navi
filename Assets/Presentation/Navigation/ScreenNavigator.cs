@@ -11,6 +11,10 @@ namespace Navi.Presentation.Navigation
         private readonly Dictionary<ScreenId, ScreenView> _screens;
         private readonly Dictionary<OverlayId, OverlayView> _overlays;
 
+        public event Action<ScreenId> ScreenShown;
+
+        public ScreenId CurrentScreenId { get; private set; } // <—
+
         public ScreenNavigator(ScreenRegistry registry)
         {
             if (registry == null) throw new ArgumentNullException(nameof(registry));
@@ -28,6 +32,9 @@ namespace Navi.Presentation.Navigation
                 throw new InvalidOperationException($"Screen not found: {id}");
 
             screen.Show();
+
+            CurrentScreenId = id;              // <—
+            ScreenShown?.Invoke(id);           // <—
         }
 
         public void ShowOverlay(OverlayId id)

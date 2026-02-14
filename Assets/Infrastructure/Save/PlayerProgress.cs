@@ -9,7 +9,6 @@ namespace Navi.Infrastructure.Save
 
         public bool HasSeenIntro { get; set; }
 
-
         public void Load()
         {
             HasSeenIntro = PlayerPrefs.GetInt(HasSeenIntroKey, 0) == 1;

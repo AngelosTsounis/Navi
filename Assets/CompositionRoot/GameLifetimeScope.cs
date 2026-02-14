@@ -1,6 +1,7 @@
 using Navi.Core.Domain;
 using Navi.Core.Interfaces;
 using Navi.Infrastructure.Save;
+using Navi.Infrastructure.Content;
 using Navi.Presentation.Controllers;
 using Navi.Presentation.Navigation;
 using Navi.Presentation.Views.Debug;
@@ -18,6 +19,7 @@ public class GameLifetimeScope : LifetimeScope
 
         // Save
         builder.Register<IPlayerProgress, PlayerProgress>(Lifetime.Singleton);
+        builder.Register<IPuzzleCatalog, InMemoryPuzzleCatalog>(Lifetime.Singleton);
 
         // Scene components
         builder.RegisterComponentInHierarchy<ScreenRegistry>();
@@ -31,7 +33,6 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<ScreenNavigator>(Lifetime.Singleton);
 
         // Entry points
-        //builder.RegisterEntryPoint<AppStartController>();
         builder.RegisterEntryPoint<AppStartController>();
         builder.RegisterEntryPoint<IntroController>();
         builder.RegisterEntryPoint<TutorialPuzzleController>();
