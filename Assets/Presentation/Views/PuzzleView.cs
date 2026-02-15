@@ -8,42 +8,26 @@ namespace Navi.Presentation.Controllers
 {
     public sealed class PuzzleView : MonoBehaviour
     {
+        [Header("Buttons (click targets)")]
         [SerializeField] private Button[] tileButtons = Array.Empty<Button>();
+
         [SerializeField] private TMP_Text[] tileTexts = Array.Empty<TMP_Text>();
+
+        [SerializeField] private Image[] tileImages = Array.Empty<Image>();
+
+        [Header("Sprites in SOLVED order (top-left -> bottom-right). Length must be size*size.")]
+        [SerializeField] private Sprite[] pieceSprites = Array.Empty<Sprite>();
+
         [SerializeField] private GameObject solvedLabel;
 
         private PuzzleGame _game;
         private Action<int> _onTilePressed;
-        private bool _isBoundAndValid;
 
         public void Bind(PuzzleGame game, Action<int> onTilePressed)
         {
             _game = game;
             _onTilePressed = onTilePressed;
-            _isBoundAndValid = false;
 
-            if (_game == null)
-            {
-                Debug.LogError("PuzzleView.Bind called with null game.", this);
-                return;
-            }
-
-            if (tileButtons == null || tileButtons.Length == 0)
-            {
-                Debug.LogError("PuzzleView has no tileButtons assigned.", this);
-                return;
-            }
-
-            if (_game.Tiles.Count != tileButtons.Length)
-            {
-                Debug.LogError(
-                    $"PuzzleView tileButtons length ({tileButtons.Length}) does not match game tile count ({_game.Tiles.Count}).",
-                    this
-                );
-                return;
-            }
-
-            // Wire button clicks once
             for (int i = 0; i < tileButtons.Length; i++)
             {
                 int idx = i;
@@ -51,29 +35,94 @@ namespace Navi.Presentation.Controllers
                 tileButtons[i].onClick.AddListener(() => _onTilePressed?.Invoke(idx));
             }
 
-            if (solvedLabel != null) solvedLabel.SetActive(false);
-            _isBoundAndValid = true;
+            SetSolved(false);
         }
 
-        public void Render()
+        public void Render(bool showEmptyPiece)
         {
-            if (!_isBoundAndValid || _game == null) return;
+            if (_game == null) return;
 
-            for (int i = 0; i < tileButtons.Length; i++)
+            int tileCount = _game.Tiles.Count;
+            int renderCount = Math.Min(tileButtons.Length, tileCount);
+
+            bool hasSpritesForAllTiles = pieceSprites != null && pieceSprites.Length == tileCount;
+
+            for (int i = 0; i < renderCount; i++)
             {
-                int val = _game.Tiles[i];
-                bool isEmpty = val == 0;
+                int val = _game.Tiles[i]; // 0 = empty
 
-                if (i < tileTexts.Length && tileTexts[i] != null)
-                    tileTexts[i].text = isEmpty ? "" : val.ToString();
+                // --- TEXT (optional)
+                if (i < tileTexts.Length)
+                {
+                    var txt = tileTexts[i];
+                    if (txt != null)
+                        txt.text = val == 0 ? string.Empty : val.ToString();
+                }
 
-                tileButtons[i].interactable = !isEmpty;
+                // --- BUTTON interaction (empty not clickable)
+                var btn = tileButtons[i];
+                if (btn != null)
+                    btn.interactable = val != 0;
+
+                // --- SPRITE
+                if (i < tileImages.Length)
+                {
+                    var img = tileImages[i];
+                    if (img != null)
+                    {
+                        ApplySprite(img, val, tileCount, showEmptyPiece, hasSpritesForAllTiles);
+                    }
+                }
             }
         }
 
-        public void ShowSolved()
+        private void ApplySprite(
+            Image img,
+            int tileValue,
+            int tileCount,
+            bool showEmptyPiece,
+            bool hasSpritesForAllTiles)
         {
-            if (solvedLabel != null) solvedLabel.SetActive(true);
+            // If sprites aren't configured, don't show anything (safe fallback)
+            if (pieceSprites == null || pieceSprites.Length == 0)
+            {
+                img.enabled = false;
+                return;
+            }
+
+            // Empty tile (0)
+            if (tileValue == 0)
+            {
+                if (showEmptyPiece && hasSpritesForAllTiles)
+                {
+                    img.enabled = true;
+                    img.sprite = pieceSprites[tileCount - 1]; // last piece shown on solve
+                }
+                else
+                {
+                    img.enabled = false; // hidden during play
+                }
+
+                return;
+            }
+
+            // Normal tile: val 1 -> sprite[0], val 2 -> sprite[1], ...
+            int spriteIndex = tileValue - 1;
+            if ((uint)spriteIndex < (uint)pieceSprites.Length)
+            {
+                img.enabled = true;
+                img.sprite = pieceSprites[spriteIndex];
+                return;
+            }
+
+            // Out of range -> safe fallback
+            img.enabled = false;
+        }
+
+        public void SetSolved(bool solved)
+        {
+            if (solvedLabel != null)
+                solvedLabel.SetActive(solved);
         }
     }
 }
