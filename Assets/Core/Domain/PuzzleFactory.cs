@@ -12,11 +12,11 @@ namespace Navi.Core.Domain
             // Start SOLVED then shuffle by valid moves (always solvable)
             var game = new PuzzleGame(3, CreateSolvedTiles(3));
 
-            ShuffleByValidMoves(game, shuffleMoves: 30);
+            ShuffleByValidMoves(game, shuffleMoves: 2);
 
             // Very rare: can end up solved again. If so, shuffle a bit more.
             if (game.IsSolved())
-                ShuffleByValidMoves(game, shuffleMoves: 10);
+                ShuffleByValidMoves(game, shuffleMoves: 2);
 
             return game;
         }
