@@ -12,8 +12,10 @@ namespace Navi.Presentation.Navigation
         private readonly Dictionary<OverlayId, OverlayView> _overlays;
 
         public event Action<ScreenId> ScreenShown;
+        public event Action<OverlayId> OverlayShown;
 
-        public ScreenId CurrentScreenId { get; private set; } // <—
+        public ScreenId CurrentScreenId { get; private set; }
+        public OverlayId? CurrentOverlayId { get; private set; }
 
         public ScreenNavigator(ScreenRegistry registry)
         {
@@ -33,8 +35,10 @@ namespace Navi.Presentation.Navigation
 
             screen.Show();
 
-            CurrentScreenId = id;              // <—
-            ScreenShown?.Invoke(id);           // <—
+            CurrentScreenId = id;
+            ScreenShown?.Invoke(id);
+
+            CurrentOverlayId = null;
         }
 
         public void ShowOverlay(OverlayId id)
@@ -43,12 +47,18 @@ namespace Navi.Presentation.Navigation
                 throw new InvalidOperationException($"Overlay not found: {id}");
 
             overlay.Show();
+
+            CurrentOverlayId = id;
+            OverlayShown?.Invoke(id);
         }
 
         public void HideOverlay(OverlayId id)
         {
             if (_overlays.TryGetValue(id, out var overlay))
                 overlay.Hide();
+
+            if (CurrentOverlayId == id)
+                CurrentOverlayId = null;
         }
     }
 }
