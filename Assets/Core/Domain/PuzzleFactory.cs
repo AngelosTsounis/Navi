@@ -64,5 +64,19 @@ namespace Navi.Core.Domain
 
             return result;
         }
+
+        public PuzzleGame CreateFromDefinition(PuzzleDefinition def)
+        {
+            if (def == null) throw new ArgumentNullException(nameof(def));
+
+            var game = new PuzzleGame(def.Size, CreateSolvedTiles(def.Size));
+
+            ShuffleByValidMoves(game, def.ShuffleMoves);
+
+            if (game.IsSolved())
+                ShuffleByValidMoves(game, 2);
+
+            return game;
+        }
     }
 }

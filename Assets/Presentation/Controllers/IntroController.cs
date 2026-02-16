@@ -24,6 +24,8 @@ namespace Navi.Presentation.Controllers
             _view.ContinueClicked += OnContinueClicked;
         }
 
+        public void Dispose() => _view.ContinueClicked -= OnContinueClicked;
+
         private void OnContinueClicked()
         {
             _progress.HasSeenIntro = true;

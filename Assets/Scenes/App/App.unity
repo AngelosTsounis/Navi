@@ -3879,6 +3879,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  puzzleCatalog: {fileID: 11400000, guid: 1015d20301f537a44bb37032fbf31458, type: 2}
 --- !u!4 &1642392673
 Transform:
   m_ObjectHideFlags: 0
@@ -4630,16 +4631,6 @@ MonoBehaviour:
   - {fileID: 616973492}
   - {fileID: 1336086941}
   - {fileID: 1605487249}
-  pieceSprites:
-  - {fileID: 5323867426213864487, guid: c5c6d7dec4ab22f4cb94640d507cd146, type: 3}
-  - {fileID: 8307157749444102510, guid: b925bf24b81ebc447b2d5610c8f37fb6, type: 3}
-  - {fileID: -6840877227038721590, guid: d51dc8fef2f7dd541b42d0d422e3de90, type: 3}
-  - {fileID: -2091250360298513239, guid: 676bb252fa2360544b3048e0a77eda5c, type: 3}
-  - {fileID: -3007260680941137385, guid: afaf675921ffea540b60de650a39294c, type: 3}
-  - {fileID: 7884724652653242668, guid: 07667685661c17e46926d5a1b1ed0c03, type: 3}
-  - {fileID: -5431638626399530290, guid: f4b8739ff4ef2da458ad923b63e6b49d, type: 3}
-  - {fileID: -3136190444717017122, guid: 09c2e0eddc8e0c246a38ff02a80d08ab, type: 3}
-  - {fileID: -4886235112314752899, guid: c8b2b71fd937bd843b0ccde2a3e1bf54, type: 3}
   solvedLabel: {fileID: 769836096}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

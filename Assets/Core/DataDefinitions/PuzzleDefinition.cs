@@ -1,4 +1,6 @@
-﻿namespace Navi.Core.Domain
+﻿using UnityEngine;
+
+namespace Navi.Core.Domain
 {
     public sealed class PuzzleDefinition
     {
@@ -6,15 +8,15 @@
         public int Size { get; }
         public int RewardRupees { get; }
         public int ShuffleMoves { get; }
-        public string SpriteSetKey { get; } 
+        public Sprite[] PieceSprites { get; }
 
-        public PuzzleDefinition(PuzzleId id, int size, int rewardRupees, int shuffleMoves, string spriteSetKey)
+        public PuzzleDefinition(PuzzleId id, int size, int rewardRupees, int shuffleMoves, Sprite[] pieceSprites)
         {
             Id = id;
             Size = size;
             RewardRupees = rewardRupees;
             ShuffleMoves = shuffleMoves;
-            SpriteSetKey = spriteSetKey;
+            PieceSprites = pieceSprites;
         }
     }
 }
