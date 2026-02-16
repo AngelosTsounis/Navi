@@ -10,16 +10,25 @@ namespace Navi.Presentation.Views.Intro
 
         public event Action ContinueClicked;
 
-        private void Awake()
+        private void OnEnable()
         {
             if (continueButton == null)
             {
-                UnityEngine.Debug.LogError("IntroView: continueButton not assigned.", this);
                 return;
             }
 
-            continueButton.onClick.RemoveAllListeners();
-            continueButton.onClick.AddListener(() => ContinueClicked?.Invoke());
+            continueButton.onClick.AddListener(OnContinueClicked);
+        }
+
+        private void OnDisable()
+        {
+            if (continueButton != null)
+                continueButton.onClick.RemoveListener(OnContinueClicked);
+        }
+
+        private void OnContinueClicked()
+        {
+            ContinueClicked?.Invoke();
         }
     }
 }
