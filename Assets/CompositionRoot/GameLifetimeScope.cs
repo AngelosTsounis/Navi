@@ -38,9 +38,9 @@ public class GameLifetimeScope : LifetimeScope
 
         // Scene components
         builder.RegisterComponentInHierarchy<ScreenRegistry>();
+        builder.RegisterComponentInHierarchy<PuzzleView>();
         builder.RegisterComponentInHierarchy<IntroView>();
         builder.RegisterComponentInHierarchy<MainMenuView>();
-        builder.RegisterComponentInHierarchy<PuzzleView>();
 
 #if UNITY_EDITOR
         builder.RegisterComponentInHierarchy<DevDebugView>();
@@ -52,8 +52,10 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<AppStartController>();
         builder.RegisterEntryPoint<IntroController>();
         builder.Register<TutorialPuzzleController>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<TutorialPuzzleController>();
-        
+
+        // Entry point that runs that same instance
+        builder.RegisterEntryPoint<TutorialPuzzleEntryPoint>(Lifetime.Singleton);
+
 #if UNITY_EDITOR
         builder.RegisterEntryPoint<DevDebugController>();
 #endif

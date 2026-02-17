@@ -21,6 +21,8 @@ namespace Navi.Presentation.Controllers
 
         public void Start()
         {
+            UnityEngine.Debug.Log("AppStartController.Start called");
+
             _progress.Load();
 
             if (!_progress.HasSeenIntro)

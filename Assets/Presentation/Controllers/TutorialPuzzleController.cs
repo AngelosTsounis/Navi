@@ -83,12 +83,16 @@ namespace Navi.Presentation.Controllers
             if (_game == null) return;
 
             bool solved = _game.IsSolved();
+            if (solved)
+                UnityEngine.Debug.Log("Puzzle is SOLVED. Tiles=" + string.Join(",", _game.Tiles));
+
 
             _view.Render(showEmptyPiece: solved);
             _view.SetSolved(solved);
 
             if (solved && !_hasSolved)
             {
+                UnityEngine.Debug.Log("Solved event invoked");
                 _hasSolved = true;
                 Solved?.Invoke();
             }
