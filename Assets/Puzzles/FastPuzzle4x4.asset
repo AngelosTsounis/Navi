@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3e9896aa3749044688e1ee60d0b723a, type: 3}
+  m_Name: FastPuzzle4x4
+  m_EditorClassIdentifier: Assembly-CSharp::Navi.Infrastructure.DataDefinitions.PuzzleDefinitionSO
+  id: fast_4x4
+  size: 4
+  shuffleMoves: 1
+  rewardRupees: 10
+  pieceSprites:
+  - {fileID: 21300000, guid: 459ded1f246c20f449be2d177f701e34, type: 3}
+  - {fileID: 21300000, guid: ed5df0b17fe87a64cb7cc3641f86efc2, type: 3}
+  - {fileID: 21300000, guid: 7a522d522f904e94192f9dde3ba1dc14, type: 3}
+  - {fileID: 21300000, guid: 9f2f65cb353afc4409cc83a39d837c36, type: 3}
+  - {fileID: 21300000, guid: c6784eae33e084d4c9c70441bf10cacf, type: 3}
+  - {fileID: 21300000, guid: 7fc710d86a382ed428d7a8521b867dbe, type: 3}
+  - {fileID: 21300000, guid: 9d1822560a342d24a8cf86714abc7f69, type: 3}
+  - {fileID: 21300000, guid: 45abd523757648647a1a4fcf2059f25f, type: 3}
+  - {fileID: 21300000, guid: b7e9b125bf88b32458da947d4dd45f5b, type: 3}
+  - {fileID: 21300000, guid: 9eb01a3f1e9bc924298b78a369826418, type: 3}
+  - {fileID: 21300000, guid: 6f1fefec90632204099024f718fbe31a, type: 3}
+  - {fileID: 21300000, guid: f46b916afb9433e4b9dedc02a577727e, type: 3}
+  - {fileID: 21300000, guid: 2913f964b6643694f94dd5edd79c1fa3, type: 3}
+  - {fileID: 21300000, guid: 9ac85337246916148813842cb767fe75, type: 3}
+  - {fileID: 21300000, guid: 24069d567ebfe974dbeb59f41c0a9b64, type: 3}
+  - {fileID: 21300000, guid: e6f75bdb0a4cda04c8b6838faea1e695, type: 3}

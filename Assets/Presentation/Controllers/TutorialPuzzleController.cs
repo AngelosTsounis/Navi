@@ -11,28 +11,29 @@ namespace Navi.Presentation.Controllers
     public sealed class TutorialPuzzleController : IStartable, IDisposable
     {
         private readonly PuzzleFactory _factory;
-        private readonly PuzzleView _view;
         private readonly GameSession _session;
         private readonly IPuzzleCatalog _catalog;
         private readonly ScreenNavigator _nav;
+        private readonly ScreenRegistry _registry;
 
         private PuzzleGame _game;
+        private PuzzleView _view;
         private bool _hasSolved;
 
         public event Action Solved;
 
         public TutorialPuzzleController(
             PuzzleFactory factory,
-            PuzzleView view,
             GameSession session,
             IPuzzleCatalog catalog,
-            ScreenNavigator nav)
+            ScreenNavigator nav,
+            ScreenRegistry registry)
         {
             _factory = factory;
-            _view = view;
             _session = session;
             _catalog = catalog;
             _nav = nav;
+            _registry = registry;
         }
 
         public void Start()
@@ -73,6 +74,13 @@ namespace Navi.Presentation.Controllers
             if (_game != null)
                 _game.Changed -= OnGameChanged;
 
+            _view = FindPuzzleView(_nav.CurrentScreenId);
+            if (_view == null)
+            {
+                UnityEngine.Debug.LogError($"No PuzzleView found under screen '{_nav.CurrentScreenId}'.");
+                return;
+            }
+
             _hasSolved = false;
 
             var def = _catalog.Get(_session.CurrentPuzzleId);
@@ -91,9 +99,20 @@ namespace Navi.Presentation.Controllers
 
         private void OnGameChanged() => RefreshView();
 
+        private PuzzleView FindPuzzleView(ScreenId id)
+        {
+            foreach (var screen in _registry.Screens)
+            {
+                if (screen != null && screen.Id == id)
+                    return screen.GetComponentInChildren<PuzzleView>(true);
+            }
+
+            return null;
+        }
+
         private void RefreshView()
         {
-            if (_game == null) return;
+            if (_game == null || _view == null) return;
 
             bool solved = _game.IsSolved();
             if (solved)

@@ -52,14 +52,18 @@ namespace Navi.Presentation.Controllers
             int renderCount = Math.Min(tileButtons.Length, tileCount);
 
             bool hasSpritesForAllTiles = _sprites.Length == tileCount;
+            bool showTextNumbers = !hasSpritesForAllTiles;
 
             for (int i = 0; i < renderCount; i++)
             {
+                if (tileButtons[i] != null)
+                    tileButtons[i].gameObject.SetActive(true);
+
                 int val = _game.Tiles[i]; // 0 = empty
 
                 // TEXT (optional)
                 if (i < tileTexts.Length && tileTexts[i] != null)
-                    tileTexts[i].text = val == 0 ? string.Empty : val.ToString();
+                    tileTexts[i].text = showTextNumbers && val != 0 ? val.ToString() : string.Empty;
 
                 // BUTTON interaction (empty not clickable)
                 if (i < tileButtons.Length && tileButtons[i] != null)
@@ -68,6 +72,12 @@ namespace Navi.Presentation.Controllers
                 // SPRITE
                 if (i < tileImages.Length && tileImages[i] != null)
                     ApplySprite(tileImages[i], val, tileCount, showEmptyPiece, hasSpritesForAllTiles);
+            }
+
+            for (int i = renderCount; i < tileButtons.Length; i++)
+            {
+                if (tileButtons[i] != null)
+                    tileButtons[i].gameObject.SetActive(false);
             }
         }
 

@@ -55,7 +55,7 @@ namespace Navi.Presentation.Views.MainMenu
 
         private void OnSurprisePuzzleClicked()
         {
-            _session.CurrentPuzzleId = new PuzzleId("tutorial_3x3");
+            _session.CurrentPuzzleId = new PuzzleId("fast_4x4");
             _nav.ShowScreen(ScreenId.Puzzle);
         }
 

@@ -6,6 +6,7 @@ using Navi.Presentation.Controllers;
 using Navi.Presentation.Navigation;
 using Navi.Presentation.Views.Intro;
 using Navi.Presentation.Views.MainMenu;
+using Navi.Presentation.Views.Puzzle;
 using System;
 using UnityEngine;
 using VContainer;
@@ -37,9 +38,9 @@ public class GameLifetimeScope : LifetimeScope
 
         // Scene components
         builder.RegisterComponentInHierarchy<ScreenRegistry>();
-        builder.RegisterComponentInHierarchy<PuzzleView>();
         builder.RegisterComponentInHierarchy<IntroView>();
         builder.RegisterComponentInHierarchy<MainMenuView>();
+        builder.RegisterComponentInHierarchy<PuzzleScreenView>();
 
         // Navigation
         builder.Register<ScreenNavigator>(Lifetime.Singleton);

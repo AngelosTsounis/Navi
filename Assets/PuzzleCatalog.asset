@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Navi.Infrastructure.DataDefinitions.PuzzleCatalogSO
   puzzles:
   - {fileID: 11400000, guid: 9d9304a0e9920ee4f8d7391dd3264c36, type: 2}
+  - {fileID: 11400000, guid: 6f90a00c9aa44f74a83c1a5da92e5b18, type: 2}
