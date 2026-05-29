@@ -4,7 +4,6 @@ using Navi.Infrastructure.DataDefinitions;
 using Navi.Infrastructure.Save;
 using Navi.Presentation.Controllers;
 using Navi.Presentation.Navigation;
-using Navi.Presentation.Views.Debug;
 using Navi.Presentation.Views.Intro;
 using Navi.Presentation.Views.MainMenu;
 using System;
@@ -42,9 +41,6 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<IntroView>();
         builder.RegisterComponentInHierarchy<MainMenuView>();
 
-#if UNITY_EDITOR
-        builder.RegisterComponentInHierarchy<DevDebugView>();
-#endif
         // Navigation
         builder.Register<ScreenNavigator>(Lifetime.Singleton);
 
@@ -56,8 +52,5 @@ public class GameLifetimeScope : LifetimeScope
         // Entry point that runs that same instance
         builder.RegisterEntryPoint<TutorialPuzzleEntryPoint>(Lifetime.Singleton);
 
-#if UNITY_EDITOR
-        builder.RegisterEntryPoint<DevDebugController>();
-#endif
     }
 }
