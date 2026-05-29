@@ -1,33 +1,49 @@
 ﻿using Navi.Core.Interfaces;
 using Navi.Presentation.Navigation;
 using Navi.Presentation.Navigation.Enums;
-using Navi.Presentation.Views.Intro;
 using VContainer.Unity;
 
 namespace Navi.Presentation.Controllers
 {
-    public sealed class IntroController : IStartable
+    public sealed class IntroController : IStartable, System.IDisposable
     {
         private readonly IPlayerProgress _progress;
         private readonly ScreenNavigator _nav;
-        private readonly IntroView _view;
+        private readonly TutorialPuzzleController _tutorial;
 
-        public IntroController(IPlayerProgress progress, ScreenNavigator nav, IntroView view)
+        private bool _completed;
+
+        public IntroController(
+            IPlayerProgress progress,
+            ScreenNavigator nav,
+            TutorialPuzzleController tutorial)
         {
             _progress = progress;
             _nav = nav;
-            _view = view;
+            _tutorial = tutorial;
         }
 
         public void Start()
         {
-            _view.ContinueClicked += OnContinueClicked;
+            UnityEngine.Debug.Log("IntroController subscribed to tutorial.Solved");
+
+            _tutorial.Solved += OnTutorialSolved;
         }
 
-        public void Dispose() => _view.ContinueClicked -= OnContinueClicked;
-
-        private void OnContinueClicked()
+        public void Dispose()
         {
+            _tutorial.Solved -= OnTutorialSolved;
+        }
+
+        private void OnTutorialSolved()
+        {
+            UnityEngine.Debug.Log("IntroController received Solved, navigating to MainMenu");
+
+            if (_completed)
+                return;
+
+            _completed = true;
+
             _progress.HasSeenIntro = true;
             _progress.Save();
 

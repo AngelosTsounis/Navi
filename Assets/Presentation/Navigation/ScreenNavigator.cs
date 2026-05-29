@@ -52,6 +52,15 @@ namespace Navi.Presentation.Navigation
             OverlayShown?.Invoke(id);
         }
 
+        public bool TryShowOverlay(OverlayId id)
+        {
+            if (!_overlays.ContainsKey(id))
+                return false;
+
+            ShowOverlay(id);
+            return true;
+        }
+
         public void HideOverlay(OverlayId id)
         {
             if (_overlays.TryGetValue(id, out var overlay))

@@ -7,7 +7,7 @@ using VContainer.Unity;
 
 namespace Navi.Presentation.Controllers
 {
-    // Runs the tutorial puzzle when the Intro SCREEN is shown.
+    // Runs the intro puzzle and the current fast puzzle screen.
     public sealed class TutorialPuzzleController : IStartable, IDisposable
     {
         private readonly PuzzleFactory _factory;
@@ -56,11 +56,24 @@ namespace Navi.Presentation.Controllers
         {
             if (id == ScreenId.Intro)
                 StartPuzzleIfNeeded();
+
+            if (id == ScreenId.Puzzle)
+                StartNewPuzzle();
         }
 
         private void StartPuzzleIfNeeded()
         {
             if (_game != null) return;
+
+            StartNewPuzzle();
+        }
+
+        private void StartNewPuzzle()
+        {
+            if (_game != null)
+                _game.Changed -= OnGameChanged;
+
+            _hasSolved = false;
 
             var def = _catalog.Get(_session.CurrentPuzzleId);
 
@@ -83,12 +96,16 @@ namespace Navi.Presentation.Controllers
             if (_game == null) return;
 
             bool solved = _game.IsSolved();
+            if (solved)
+                UnityEngine.Debug.Log("Puzzle is SOLVED. Tiles=" + string.Join(",", _game.Tiles));
+
 
             _view.Render(showEmptyPiece: solved);
             _view.SetSolved(solved);
 
-            if (solved && !_hasSolved)
+            if (solved && !_hasSolved && _nav.CurrentScreenId == ScreenId.Intro)
             {
+                UnityEngine.Debug.Log("Solved event invoked");
                 _hasSolved = true;
                 Solved?.Invoke();
             }
